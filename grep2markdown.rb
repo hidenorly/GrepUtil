@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-# Copyright 2023 hidenorly
+# Copyright 2023, 2024 hidenorly
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,7 +71,11 @@ while line = gets
 				puts options[:splitFolderFile] ? "| :--- | :--- | :--- | :--- |" : "| :--- | :--- | :--- |"
 				firstLine = false
 			end
-			puts "| #{path} | #{lineNum} | ```#{result}``` |"
+			if !result.empty? then
+				puts "| #{path} | #{lineNum} | ```#{result}``` |"
+			else
+				puts "| #{path} | #{lineNum} |  |"
+			end
 		else
 			result = aLine.slice(pos+1, aLine.length).strip
 			if firstLine then
