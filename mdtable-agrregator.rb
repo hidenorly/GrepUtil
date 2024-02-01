@@ -40,21 +40,26 @@ class MarkdownTableUtil
 	def self.putColsIntoNestedHash(cols, theHash)
 		_theHash = theHash
 		_cols = cols.clone()
-		lastValue = _cols.pop()
+		lastValue = _cols.pop().to_s
+		lastValue = "" if lastValue=="``````"
 		lastHash = theHash
 		lastCol = nil
 		_cols.each do |aCol|
-			if !_theHash.has_key?(aCol) then
-				_theHash[aCol] = {} 
+			if _theHash.kind_of?(Hash) then
+				if !_theHash.has_key?(aCol) then
+					_theHash[aCol] = {}
+				end
+				lastHash = _theHash
+				lastCol = aCol
+				_theHash = _theHash[aCol]
 			end
-			lastHash = _theHash
-			lastCol = aCol
-			_theHash = _theHash[aCol]
 		end
 		if lastHash[lastCol].kind_of?(String) then
-			lastHash[lastCol] = "#{lastHash[lastCol]} <br> #{lastValue}"
+			if !lastValue.empty? then
+				lastHash[lastCol] = "#{lastHash[lastCol]} <br> #{lastValue}"
+			end
 		else
-			lastHash[lastCol] = lastValue.to_s
+			lastHash[lastCol] = lastValue
 		end
 
 		return theHash
